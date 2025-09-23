@@ -36,7 +36,10 @@ class ScssEditor(models.AbstractModel):
                 custom_url
             )
             if attachment:
-                return base64.b64decode(attachment.datas)
+                try:
+                    return base64.b64decode(attachment.datas)
+                except Exception as e:
+                    return attachment.index_content.encode('utf-8')
         with misc.file_open(url.strip('/'), 'rb', filter_ext=EXTENSIONS) as f:
             return f.read()
 
